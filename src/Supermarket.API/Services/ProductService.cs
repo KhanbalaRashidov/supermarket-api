@@ -6,24 +6,16 @@ using Supermarket.API.Infrastructure;
 
 namespace Supermarket.API.Services
 {
-    public class ProductService : IProductService
+    public class ProductService(
+        IUnitOfWork unitOfWork,
+        IMemoryCache cache,
+        ILogger<ProductService> logger
+        ) : IProductService
     {
 
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMemoryCache _cache;
-        private readonly ILogger<ProductService> _logger;
-
-        public ProductService
-        (
-            IUnitOfWork unitOfWork,
-            IMemoryCache cache,
-            ILogger<ProductService> logger
-        )
-        {
-            _unitOfWork = unitOfWork;
-            _cache = cache;
-            _logger = logger;
-        }
+        private readonly IUnitOfWork _unitOfWork = unitOfWork;
+        private readonly IMemoryCache _cache = cache;
+        private readonly ILogger<ProductService> _logger = logger;
 
         public async Task<QueryResult<Product>> ListAsync(ProductsQuery query)
         {

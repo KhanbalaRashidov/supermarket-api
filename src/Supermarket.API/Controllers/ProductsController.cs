@@ -5,16 +5,10 @@ using Supermarket.API.Resources;
 
 namespace Supermarket.API.Controllers
 {
-    public class ProductsController : BaseApiController
+    public class ProductsController(IServiceManager serviceManager, IMapper mapper) : BaseApiController
     {
-        private readonly IServiceManager _serviceManager;
-        private readonly IMapper _mapper;
-
-        public ProductsController(IServiceManager serviceManager, IMapper mapper)
-        {
-            _serviceManager = serviceManager;
-            _mapper = mapper;
-        }
+        private readonly IServiceManager _serviceManager = serviceManager;
+        private readonly IMapper _mapper = mapper;
 
         /// <summary>
         /// Lists all existing products according to query filters.

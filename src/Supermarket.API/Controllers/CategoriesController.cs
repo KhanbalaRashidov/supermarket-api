@@ -5,22 +5,16 @@ using Supermarket.API.Resources;
 
 namespace Supermarket.API.Controllers
 {
-	public class CategoriesController : BaseApiController
+	public class CategoriesController(IServiceManager serviceManager, IMapper mapper) : BaseApiController
 	{
-		private readonly IServiceManager _serviceManager;
-		private readonly IMapper _mapper;
+		private readonly IServiceManager _serviceManager = serviceManager;
+		private readonly IMapper _mapper = mapper;
 
-		public CategoriesController(IServiceManager serviceManager, IMapper mapper)
-		{
-			_serviceManager = serviceManager;
-			_mapper = mapper;
-		}
-
-		/// <summary>
-		/// Lists all categories.
-		/// </summary>
-		/// <returns>List os categories.</returns>
-		[HttpGet]
+        /// <summary>
+        /// Lists all categories.
+        /// </summary>
+        /// <returns>List os categories.</returns>
+        [HttpGet]
 		[ProducesResponseType(typeof(IEnumerable<CategoryResource>), 200)]
 		public async Task<IEnumerable<CategoryResource>> ListAsync()
 		{

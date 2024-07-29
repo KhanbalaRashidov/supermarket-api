@@ -13,9 +13,6 @@ namespace Supermarket.API.Persistence.Repositories
         public IProductRepository ProductRepository => _productRepository.Value;
         public ICategoryRepository CategoryRepository => _categoryRepository.Value;
 
-        public async Task CompleteAsync()
-        {
-            await _context.SaveChangesAsync();
-        }
+        public async Task CompleteAsync() => await _context.SaveChangesAsync();
     }
 }
