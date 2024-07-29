@@ -7,12 +7,12 @@ namespace Supermarket.API.Controllers
 {
 	public class CategoriesController : BaseApiController
 	{
-		private readonly ICategoryService _categoryService;
+		private readonly IServiceManager _serviceManager;
 		private readonly IMapper _mapper;
 
-		public CategoriesController(ICategoryService categoryService, IMapper mapper)
+		public CategoriesController(IServiceManager serviceManager, IMapper mapper)
 		{
-			_categoryService = categoryService;
+			_serviceManager = serviceManager;
 			_mapper = mapper;
 		}
 
@@ -24,7 +24,7 @@ namespace Supermarket.API.Controllers
 		[ProducesResponseType(typeof(IEnumerable<CategoryResource>), 200)]
 		public async Task<IEnumerable<CategoryResource>> ListAsync()
 		{
-			var categories = await _categoryService.ListAsync();
+			var categories = await _serviceManager.CategoryService.ListAsync();
 			return _mapper.Map<IEnumerable<CategoryResource>>(categories);
 		}
 
@@ -39,7 +39,7 @@ namespace Supermarket.API.Controllers
 		public async Task<IActionResult> PostAsync([FromBody] SaveCategoryResource resource)
 		{
 			var category = _mapper.Map<Category>(resource);
-			var result = await _categoryService.SaveAsync(category);
+			var result = await _serviceManager.CategoryService.SaveAsync(category);
 
 			if (!result.Success)
 			{
@@ -62,7 +62,7 @@ namespace Supermarket.API.Controllers
 		public async Task<IActionResult> PutAsync(int id, [FromBody] SaveCategoryResource resource)
 		{
 			var category = _mapper.Map<Category>(resource);
-			var result = await _categoryService.UpdateAsync(id, category);
+			var result = await _serviceManager.CategoryService.UpdateAsync(id, category);
 
 			if (!result.Success)
 			{
@@ -83,7 +83,7 @@ namespace Supermarket.API.Controllers
 		[ProducesResponseType(typeof(ErrorResource), 400)]
 		public async Task<IActionResult> DeleteAsync(int id)
 		{
-			var result = await _categoryService.DeleteAsync(id);
+			var result = await _serviceManager.CategoryService.DeleteAsync(id);
 
 			if (!result.Success)
 			{

@@ -7,12 +7,12 @@ namespace Supermarket.API.Controllers
 {
     public class ProductsController : BaseApiController
     {
-        private readonly IProductService _productService;
+        private readonly IServiceManager _serviceManager;
         private readonly IMapper _mapper;
 
-        public ProductsController(IProductService productService, IMapper mapper)
+        public ProductsController(IServiceManager serviceManager, IMapper mapper)
         {
-            _productService = productService;
+            _serviceManager = serviceManager;
             _mapper = mapper;
         }
 
@@ -25,7 +25,7 @@ namespace Supermarket.API.Controllers
         public async Task<QueryResultResource<ProductResource>> ListAsync([FromQuery] ProductsQueryResource query)
         {
             var productsQuery = _mapper.Map<ProductsQuery>(query);
-            var queryResult = await _productService.ListAsync(productsQuery);
+            var queryResult = await _serviceManager.ProductService.ListAsync(productsQuery);
 
             return _mapper.Map<QueryResultResource<ProductResource>>(queryResult);
         }
@@ -41,7 +41,7 @@ namespace Supermarket.API.Controllers
         public async Task<IActionResult> PostAsync([FromBody] SaveProductResource resource)
         {
             var product = _mapper.Map<Product>(resource);
-            var result = await _productService.SaveAsync(product);
+            var result = await _serviceManager.ProductService.SaveAsync(product);
 
             if (!result.Success)
             {
@@ -64,7 +64,7 @@ namespace Supermarket.API.Controllers
         public async Task<IActionResult> PutAsync(int id, [FromBody] SaveProductResource resource)
         {
             var product = _mapper.Map<Product>(resource);
-            var result = await _productService.UpdateAsync(id, product);
+            var result = await _serviceManager.ProductService.UpdateAsync(id, product);
 
             if (!result.Success)
             {
@@ -85,7 +85,7 @@ namespace Supermarket.API.Controllers
         [ProducesResponseType(typeof(ErrorResource), 400)]
         public async Task<IActionResult> DeleteAsync(int id)
         {
-            var result = await _productService.DeleteAsync(id);
+            var result = await _serviceManager.ProductService.DeleteAsync(id);
 
             if (!result.Success)
             {
